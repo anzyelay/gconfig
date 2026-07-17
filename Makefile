@@ -16,8 +16,13 @@ LIB_SHARED  = $(LIB_DIR)/libconfig.so
 EXAMPLE     = $(BUILD_DIR)/example
 DAEMON      = $(BUILD_DIR)/configd
 CLI         = $(BUILD_DIR)/config-cli
+PREFIX      = /usr/local
+BIN_DIR     = $(PREFIX)/bin
+LIB_DIR_TGT = $(PREFIX)/lib
+INC_DIR     = $(PREFIX)/include
+BASH_COMP   = $(PREFIX)/share/bash-completion/completions
 
-.PHONY: all clean example http-server daemon cli
+.PHONY: all clean example http-server daemon cli install install-completion
 
 all: $(LIB_STATIC) $(LIB_SHARED) example daemon cli
 
@@ -55,3 +60,15 @@ example: $(LIB_STATIC) examples/example.c
 
 clean:
 	rm -rf $(BUILD_DIR) $(LIB_DIR) config-data
+
+install: $(LIB_SHARED) $(LIB_STATIC) daemon cli
+	install -d $(DESTDIR)$(LIB_DIR_TGT) $(DESTDIR)$(INC_DIR) $(DESTDIR)$(BIN_DIR)
+	install -m 644 $(LIB_STATIC) $(DESTDIR)$(LIB_DIR_TGT)
+	install -m 755 $(LIB_SHARED) $(DESTDIR)$(LIB_DIR_TGT)
+	install -m 644 include/config.h $(DESTDIR)$(INC_DIR)
+	install -m 755 $(DAEMON) $(DESTDIR)$(BIN_DIR)
+	install -m 755 $(CLI) $(DESTDIR)$(BIN_DIR)
+
+install-completion:
+	install -d $(DESTDIR)$(BASH_COMP)
+	install -m 644 completions/config-cli.bash $(DESTDIR)$(BASH_COMP)/config-cli

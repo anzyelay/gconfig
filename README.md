@@ -30,6 +30,8 @@ A GSettings-inspired configuration library for C, featuring schema validation, t
 │   └── daemon.c            # Config daemon: multi-process central hub
 ├── tools/
 │   └── config-cli.c        # gsettings-style CLI tool
+├── completions/
+│   └── config-cli.bash     # Bash tab-completion script
 ├── examples/
 │   ├── example.c           # Direct file-mode usage example
 │   └── daemon_test.c       # Multi-process daemon mode demo
@@ -121,3 +123,19 @@ config-cli -s /tmp/configd.sock list-keys myapp
 # Monitor real-time changes
 config-cli -s /tmp/configd.sock monitor myapp
 ```
+
+### Bash Completion
+
+```bash
+# Install the completion script
+make install-completion
+
+# Or source directly
+source completions/config-cli.bash
+```
+
+After installation, tab completion supports:
+- Commands: `get`, `set`, `reset`, `reset-all`, `list-keys`, `list-schemas`, `monitor`
+- Options: `-s` (socket path, with file completion), `-t` (type: int/double/string/boolean)
+- Schema names (queried from daemon in real-time)
+- Key names (queried from daemon for the selected schema)
