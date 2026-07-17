@@ -584,7 +584,8 @@ int config_daemon_process_events(config_t *config) {
         char *cmd = strtok_r(line, " ", &saveptr);
         char *ns = strtok_r(NULL, " ", &saveptr);
         char *key = strtok_r(NULL, " ", &saveptr);
-        char *tval = strtok_r(NULL, " ", &saveptr);
+        char *tval = saveptr;
+        while (*tval == ' ') tval++;
 
         if (!cmd || !ns || !key) continue;
         if (strcmp(ns, schema_get_id(config->schema)) != 0) continue;

@@ -217,8 +217,10 @@ static void handle_cmd(client_t *c, char *line) {
 
     if (strcmp(cmd, "SET") == 0) {
         char *key = strtok_r(NULL, " ", &saveptr);
-        char *tval = strtok_r(NULL, " ", &saveptr);
-        if (!key || !tval) { send_line(c, "ERROR missing key or value"); return; }
+        if (!key) { send_line(c, "ERROR missing key"); return; }
+        char *tval = saveptr;
+        while (*tval == ' ') tval++;
+        if (!*tval) { send_line(c, "ERROR missing value"); return; }
         config_value_t *parsed = calloc(1, sizeof(*parsed));
         if (!parsed) { send_line(c, "ERROR allocation failed"); return; }
         if (value_from_string(parsed, tval) != 0) {

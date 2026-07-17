@@ -266,7 +266,8 @@ static int cmd_monitor(config_ipc_t *ipc, const char *schema, const char *key_fi
         strtok_r(line, " ", &saveptr);
         char *ns = strtok_r(NULL, " ", &saveptr);
         char *key = strtok_r(NULL, " ", &saveptr);
-        char *tval = strtok_r(NULL, " ", &saveptr);
+        char *tval = saveptr;
+        while (*tval == ' ') tval++;
 
         if (!ns || !key || !tval) continue;
         if (strcmp(ns, schema) != 0) continue;
