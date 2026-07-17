@@ -15,9 +15,13 @@ LIB_STATIC  = $(LIB_DIR)/libconfig.a
 LIB_SHARED  = $(LIB_DIR)/libconfig.so
 EXAMPLE     = $(BUILD_DIR)/example
 
-.PHONY: all clean example
+.PHONY: all clean example http-server
 
 all: $(LIB_STATIC) $(LIB_SHARED) example
+
+http-server: $(OBJS) examples/http_server.c
+	@mkdir -p $(BUILD_DIR)
+	$(CC) $(CFLAGS) $(INCLUDES) examples/http_server.c $(OBJS) -o $(BUILD_DIR)/http_server
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(BUILD_DIR)
