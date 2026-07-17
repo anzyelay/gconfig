@@ -15,10 +15,15 @@ LIB_STATIC  = $(LIB_DIR)/libconfig.a
 LIB_SHARED  = $(LIB_DIR)/libconfig.so
 EXAMPLE     = $(BUILD_DIR)/example
 DAEMON      = $(BUILD_DIR)/configd
+CLI         = $(BUILD_DIR)/config-cli
 
-.PHONY: all clean example http-server daemon
+.PHONY: all clean example http-server daemon cli
 
-all: $(LIB_STATIC) $(LIB_SHARED) example daemon
+all: $(LIB_STATIC) $(LIB_SHARED) example daemon cli
+
+cli: $(BUILD_DIR)/ipc.o tools/config-cli.c
+	@mkdir -p $(BUILD_DIR)
+	$(CC) $(CFLAGS) $(INCLUDES) tools/config-cli.c $(BUILD_DIR)/ipc.o -o $(CLI)
 
 daemon: $(BUILD_DIR)/configd.o
 	$(CC) $(CFLAGS) $(INCLUDES) $(filter-out $(BUILD_DIR)/config.o, $(OBJS)) $(BUILD_DIR)/configd.o -o $(DAEMON)
