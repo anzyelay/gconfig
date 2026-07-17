@@ -41,12 +41,13 @@ hashmap_t *backend_load(const char *filepath) {
         char *key = line;
         char *value_str = colon + 1;
 
-        config_value_t val;
-        if (value_from_string(&val, value_str) == 0) {
-            config_value_t *v = value_clone(&val);
+        config_value_t *val = calloc(1, sizeof(*val));
+        if (!val) continue;
+        if (value_from_string(val, value_str) == 0) {
+            config_value_t *v = value_clone(val);
             if (v) hashmap_put(store, key, v);
-            value_free(&val);
         }
+        value_free(val);
     }
     fclose(fp);
     return store;

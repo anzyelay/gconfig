@@ -29,6 +29,10 @@ typedef void (*config_changed_cb)(config_t *config, const char *key, void *user_
 
 config_t *config_new(const char *schema_id, const char *config_dir,
                      const config_schema_entry_t *schema, size_t schema_len);
+config_t *config_new_with_daemon(const char *schema_id, const char *socket_path,
+                                 const char *config_dir,
+                                 const config_schema_entry_t *schema,
+                                 size_t schema_len);
 void config_free(config_t *config);
 
 int config_get_int(config_t *config, const char *key);
@@ -48,6 +52,10 @@ int config_sync(config_t *config);
 int config_reset(config_t *config, const char *key);
 int config_reset_all(config_t *config);
 void config_list_keys(config_t *config);
+
+int config_daemon_is_connected(config_t *config);
+int config_daemon_process_events(config_t *config);
+int config_daemon_get_fd(config_t *config);
 
 #ifdef __cplusplus
 }
