@@ -269,7 +269,7 @@ static int cmd_monitor(config_ipc_t *ipc, const char *schema, const char *key_fi
         char *tval = saveptr;
         while (*tval == ' ') tval++;
 
-        if (!ns || !key || !tval) continue;
+        if (!ns || !key || !*tval) continue;
         if (strcmp(ns, schema) != 0) continue;
         if (key_filter && strcmp(key, key_filter) != 0) continue;
 

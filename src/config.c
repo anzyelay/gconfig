@@ -592,7 +592,7 @@ int config_daemon_process_events(config_t *config) {
 
         config_value_t *old = hashmap_get(config->values, key);
 
-        if (tval && strcmp(tval, "-") != 0) {
+        if (*tval && strcmp(tval, "-") != 0) {
             config_value_t parsed;
             if (value_from_string(&parsed, tval) == 0) {
                 config_value_t *vp = value_clone(&parsed);
